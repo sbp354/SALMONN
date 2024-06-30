@@ -145,7 +145,7 @@ def prepare_one_audio_input(wav_path, wav_processor, cuda_enabled=True):
         audio = np.concatenate((audio, sil), axis=0)
     audio = audio[: sr * 30] # truncate audio to at most 30s
 
-    spectrogram = wav_processor(audio, sampling_rate=sr, return_tensors="pt")["input_features"]
+    spectrogram = wav_processor(audio, sampling_rate=sr, return_tensors="pt", padding = True)["input_features"]
 
     sample = {
         "spectrogram": spectrogram,
@@ -157,27 +157,23 @@ def prepare_one_audio_input(wav_path, wav_processor, cuda_enabled=True):
 
     return sample
 
-def prepare_batch_audio_input(wav_paths, wav_processor, cuda_enabled=True):
+def prepare_batch_audio_input(wav_paths, wav_processor):
     batch_samples = {
         "spectrograms": [],
         "raw_wavs": [],
-        "padding_masks": []
+        "padding_masks": [],
     }
-    
+
     for wav_path in wav_paths:
         samples = prepare_one_audio_input(wav_path, wav_processor, cuda_enabled=False)
         batch_samples["spectrograms"].append(samples["spectrogram"])
         batch_samples["raw_wavs"].append(samples["raw_wav"])
         batch_samples["padding_masks"].append(samples["padding_mask"])
-    
-    # Stack lists into batched tensors
+
     batch_samples["spectrograms"] = torch.cat(batch_samples["spectrograms"], dim=0)
     batch_samples["raw_wavs"] = torch.cat(batch_samples["raw_wavs"], dim=0)
     batch_samples["padding_masks"] = torch.cat(batch_samples["padding_masks"], dim=0)
-    
-    if cuda_enabled:
-        batch_samples = move_to_cuda(batch_samples)
-    
+
     return batch_samples
 
 def prepare_text_input(prompts, model_config):
