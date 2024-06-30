@@ -145,17 +145,18 @@ def prepare_one_audio_input(wav_path, wav_processor, cuda_enabled=True):
         audio = np.concatenate((audio, sil), axis=0)
     audio = audio[: sr * 30] # truncate audio to at most 30s
 
-    spectrogram = wav_processor(audio, sampling_rate=sr, return_tensors="pt", padding = True)["input_features"]
+    # Ensure the spectrogram is properly padded
+    spectrogram = wav_processor(audio, sampling_rate=sr, return_tensors="pt", padding='max_length')["input_features"]
 
-    sample = {
+    samples = {
         "spectrogram": spectrogram,
         "raw_wav": torch.from_numpy(audio).unsqueeze(0),
         "padding_mask": torch.zeros(len(audio), dtype=torch.bool).unsqueeze(0),
     }
     if cuda_enabled:
-        sample = move_to_cuda(sample)
+        samples = move_to_cuda(samples)
 
-    return sample
+    return samples
 
 def prepare_batch_audio_input(wav_paths, wav_processor):
     batch_samples = {
