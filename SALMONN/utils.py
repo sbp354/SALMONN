@@ -174,6 +174,7 @@ def prepare_batch_audio_input(wav_paths, wav_processor):
         batch_samples["padding_masks"].append(samples["padding_mask"])
         max_spectrogram_length = max(max_spectrogram_length, samples["spectrogram"].size(1))
         max_raw_wav_length = max(max_raw_wav_length, samples["raw_wav"].size(1))
+        max_padding_mask_length = max(max_padding_mask_length, samples["padding_mask"].size(1))
 
     # Pad all spectrograms to the same length
     for i in range(len(batch_samples["spectrograms"])):
@@ -188,6 +189,13 @@ def prepare_batch_audio_input(wav_paths, wav_processor):
         if raw_wav_length < max_raw_wav_length:
             padding = torch.zeros((1, max_raw_wav_length - raw_wav_length))
             batch_samples["raw_wavs"][i] = torch.cat([batch_samples["raw_wavs"][i], padding], dim=1)
+    
+    #Pad all padding masks
+    for i in range(len(batch_samples["padding_masks"])):
+        padding_mask_length = batch_samples["padding_masks"][i].size(1)
+        if padding_mask_length < max_padding_mask_length:
+            padding = torch.zeros((1, max_padding_mask_length - padding_mask_length), dtype=torch.bool)
+            batch_samples["padding_masks"][i] = torch.cat([batch_samples["padding_masks"][i], padding], dim=1)
 
     batch_samples["spectrograms"] = torch.cat(batch_samples["spectrograms"], dim=0)
     batch_samples["raw_wavs"] = torch.cat(batch_samples["raw_wavs"], dim=0)
