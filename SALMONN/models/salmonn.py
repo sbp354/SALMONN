@@ -457,13 +457,13 @@ class SALMONN(nn.Module):
         speech_llama_proj_model = config.model.speech_llama_proj_model
         freeze_speech_llama_proj = config.model.freeze_speech_llama_proj
 
-        multi_prompt = config.multi_prompt
-        prompt_path = config.prompt_path
-        prompt_template = config.prompt_template
-        max_txt_len = config.max_txt_len
-        end_sym = config.end_sym
-        low_resource = config.low_resource
-        device_8bit = config.device_8bit
+        multi_prompt = config.model.multi_prompt
+        prompt_path = config.model.prompt_path
+        prompt_template = config.model.prompt_template
+        max_txt_len = config.model.max_txt_len
+        end_sym = config.model.end_sym
+        low_resource = config.model.low_resource
+        device_8bit = config.model.device_8bit
 
         lora = True if config.lora.lora is None else config.lora.lora
         lora_rank = 8 if config.lora.lora_rank is None else config.lora.lora_rank
