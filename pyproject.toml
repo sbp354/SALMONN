@@ -19,7 +19,8 @@ dependencies = [
 "sentencepiece==0.1.97",
 "accelerate==0.20.3",
 "bitsandbytes==0.43.1",
-"gradio==3.23.0"
+"gradio==3.23.0",
+"numpy<2"
 ]
 
 [tool.setuptools]
