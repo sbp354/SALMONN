@@ -157,7 +157,7 @@ def prepare_one_audio_input(wav_path, wav_processor, cuda_enabled=True):
 
     return sample
 
-def prepare_batch_audio_input(wav_paths, wav_procesor, cuda_enabled=True):
+def prepare_batch_audio_input(wav_paths, wav_processor, cuda_enabled=True):
     batch_samples = {
         "spectrograms": [],
         "raw_wavs": [],
