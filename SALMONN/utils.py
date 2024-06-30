@@ -136,7 +136,7 @@ class IterLoader:
         return len(self._dataloader)
 
 
-def prepare_one_sample(wav_path, wav_processor, cuda_enabled=True):
+def prepare_one_audio_input(wav_path, wav_processor, cuda_enabled=True):
     audio, sr = sf.read(wav_path)
     if len(audio.shape) == 2: # stereo to mono
         audio = audio[:, 0]
@@ -147,12 +147,45 @@ def prepare_one_sample(wav_path, wav_processor, cuda_enabled=True):
 
     spectrogram = wav_processor(audio, sampling_rate=sr, return_tensors="pt")["input_features"]
 
-    samples = {
+    sample = {
         "spectrogram": spectrogram,
         "raw_wav": torch.from_numpy(audio).unsqueeze(0),
         "padding_mask": torch.zeros(len(audio), dtype=torch.bool).unsqueeze(0),
     }
     if cuda_enabled:
-        samples = move_to_cuda(samples)
+        sample = move_to_cuda(sample)
 
-    return samples
+    return sample
+
+def prepare_batch_audio_inputs(wav_paths, wav_procesors, cuda_enabled=True):
+    batch_samples = {
+        "spectrograms": [],
+        "raw_wavs": [],
+        "padding_masks": []
+    }
+    
+    for wav_path in wav_paths:
+        samples = prepare_one_audio_input(wav_path, wav_processor, cuda_enabled=False)
+        batch_samples["spectrograms"].append(samples["spectrogram"])
+        batch_samples["raw_wavs"].append(samples["raw_wav"])
+        batch_samples["padding_masks"].append(samples["padding_mask"])
+    
+    # Stack lists into batched tensors
+    batch_samples["spectrograms"] = torch.cat(batch_samples["spectrograms"], dim=0)
+    batch_samples["raw_wavs"] = torch.cat(batch_samples["raw_wavs"], dim=0)
+    batch_samples["padding_masks"] = torch.cat(batch_samples["padding_masks"], dim=0)
+    
+    if cuda_enabled:
+        batch_samples = move_to_cuda(batch_samples)
+    
+    return batch_samples
+
+def prepare_text_input(prompts, model_config):
+    prompt = [
+        model_config.prompt_template.format("<Speech><SpeechHere></Speech> " + prompt.strip()) for prompt in prompts
+    ]
+    return prompt
+
+
+
+
