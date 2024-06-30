@@ -465,7 +465,7 @@ class SALMONN(nn.Module):
         low_resource = config.model.low_resource
         device_8bit = config.model.device_8bit
 
-        lora = True if config.lora.lora is None else config.lora.lora
+        lora = True if config.model.lora is None else config.model.lora
         lora_rank = 8 if config.lora.lora_rank is None else config.lora.lora_rank
         lora_alpha = 32 if config.lora.lora_alpha is None else config.lora.lora_alpha
         lora_dropout = 0.1 if config.lora.lora_dropout is None else config.lora.lora_dropout
