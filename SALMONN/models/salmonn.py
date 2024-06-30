@@ -28,7 +28,7 @@ from .modeling_llama import LlamaForCausalLM
 from .modeling_whisper import WhisperModel
 from .beats.BEATs import BEATsConfig, BEATs
 from .utils import StoppingCriteriaSub
-from prompts.prompts import train_prompts, test_prompts
+from .prompts import train_prompts, test_prompts
 
 
 class SALMONN(nn.Module):
