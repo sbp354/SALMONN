@@ -494,7 +494,7 @@ class SALMONN(nn.Module):
             device_8bit=device_8bit,
         )
 
-        ckpt_path = config.model.get("ckpt", "")
+        ckpt_path = config.model.ckpt
         if ckpt_path:
             logging.info("Load SALMONN ckpt from: {}".format(ckpt_path))
             ckpt = torch.load(ckpt_path, map_location="cpu")
