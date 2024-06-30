@@ -441,26 +441,21 @@ class SALMONN(nn.Module):
 
     @classmethod
     def from_config(cls, config):
-        llama_path = config.get("llama_path")
-        whisper_path = config.get("whisper_path")
-        freeze_whisper = config.get("freeze_whisper", True)
-        beats_path = config.get("beats_path", "")
-        freeze_beats = config.get("freeze_beats", True)
+        llama_path = config.model.get("llama_path")
+        whisper_path = config.model.get("whisper_path")
+        freeze_whisper = config.model.get("freeze_whisper", True)
+        beats_path = config.model.get("beats_path", "")
+        freeze_beats = config.model.get("freeze_beats", True)
 
-        use_speech_Qformer = config.get("use_speech_Qformer", True)
-        num_speech_query_token = config.get("num_speech_query_token", 1)
-        freeze_speech_QFormer = config.get("freeze_speech_QFormer", False)
-        window_level_Qformer = config.get("window_level_Qformer", True)
-        second_per_window = config.get("second_per_window", 0.333333)
-        second_stride = config.get("second_stride", 0.333333)
+        use_speech_Qformer = config.model.get("use_speech_Qformer", True)
+        num_speech_query_token = config.model.get("num_speech_query_token", 1)
+        freeze_speech_QFormer = config.model.get("freeze_speech_QFormer", False)
+        window_level_Qformer = config.model.get("window_level_Qformer", True)
+        second_per_window = config.model.get("second_per_window", 0.333333)
+        second_stride = config.model.get("second_stride", 0.333333)
 
-        speech_llama_proj_model = config.get("speech_llama_proj_model", "")
-        freeze_speech_llama_proj = config.get("freeze_speech_llama_proj", False)
-
-        lora = config.get("lora", True)
-        lora_rank = config.get("lora_rank", 8)
-        lora_alpha = config.get("lora_alpha", 32)
-        lora_dropout = config.get("lora_dropout", 0.1)
+        speech_llama_proj_model = config.model.get("speech_llama_proj_model", "")
+        freeze_speech_llama_proj = config.model.get("freeze_speech_llama_proj", False)
 
         multi_prompt = config.get("multi_prompt", False)
         prompt_path = config.get("prompt_path", "")
@@ -469,6 +464,11 @@ class SALMONN(nn.Module):
         end_sym = config.get("end_sym", "</s>")
         low_resource = config.get("low_resource", False)
         device_8bit = config.get("device_8bit", 0)
+
+        lora = True if config.lora.lora is None else config.lora.get("lora", True)
+        lora_rank = 8 if config.lora.lora_rank is None else config.get("lora_rank", 8)
+        lora_alpha = 32 if config.lora.lora_alpha is None else config.lora.get("lora_alpha", 32)
+        lora_dropout = 0.1 if config.lora.lora_dropout is None else config.lora.get("lora_dropout", 0.1)
 
         model = cls(
             llama_path=llama_path,
@@ -497,7 +497,7 @@ class SALMONN(nn.Module):
             device_8bit=device_8bit,
         )
 
-        ckpt_path = config.get("ckpt", "")
+        ckpt_path = config.model.get("ckpt", "")
         if ckpt_path:
             logging.info("Load SALMONN ckpt from: {}".format(ckpt_path))
             ckpt = torch.load(ckpt_path, map_location="cpu")
