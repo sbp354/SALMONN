@@ -424,15 +424,15 @@ class SALMONN(nn.Module):
         stopping_criteria = StoppingCriteriaList([StoppingCriteriaSub(stops=stop_words_ids)])
         outputs = self.llama_model.generate(
             inputs_embeds=embeds,
-            max_new_tokens=generate_cfg.get("max_new_tokens", 200),
+            max_new_tokens=generate_cfg.max_new_tokens,
             stopping_criteria=stopping_criteria,
-            num_beams=generate_cfg.get("num_beams", 4),
-            do_sample=generate_cfg.get("do_sample", False),
-            min_length=generate_cfg.get("min_length", 1),
-            temperature=generate_cfg.get("temperature", 1.0),
-            top_p=generate_cfg.get("top_p", 0.9),
-            repetition_penalty=generate_cfg.get("repetition_penalty", 1.0),
-            length_penalty=generate_cfg.get("length_penalty", 1.0),
+            num_beams=generate_cfg.num_beams,
+            do_sample=generate_cfg.do_sample,
+            min_length=generate_cfg.min_length,
+            temperature=generate_cfg.temperature,
+            top_p=generate_cfg.top_p,
+            repetition_penalty=generate_cfg.repetition_penalty,
+            length_penalty=generate_cfg.length_penalty,
             attention_mask=attns,
         )
         text = self.llama_tokenizer.batch_decode(outputs, add_special_tokens=False)
@@ -441,34 +441,34 @@ class SALMONN(nn.Module):
 
     @classmethod
     def from_config(cls, config):
-        llama_path = config.model.get("llama_path")
-        whisper_path = config.model.get("whisper_path")
-        freeze_whisper = config.model.get("freeze_whisper", True)
-        beats_path = config.model.get("beats_path", "")
-        freeze_beats = config.model.get("freeze_beats", True)
+        llama_path = config.model.llama_path
+        whisper_path = config.model.whisper_path
+        freeze_whisper = config.model.freeze_whisper
+        beats_path = config.model.beats_path
+        freeze_beats = config.model.freeze_beats
 
-        use_speech_Qformer = config.model.get("use_speech_Qformer", True)
-        num_speech_query_token = config.model.get("num_speech_query_token", 1)
-        freeze_speech_QFormer = config.model.get("freeze_speech_QFormer", False)
-        window_level_Qformer = config.model.get("window_level_Qformer", True)
-        second_per_window = config.model.get("second_per_window", 0.333333)
-        second_stride = config.model.get("second_stride", 0.333333)
+        use_speech_Qformer = config.model.use_speech_Qformer
+        num_speech_query_token = config.model.num_speech_query_token
+        freeze_speech_QFormer = config.model.freeze_speech_QFormer
+        window_level_Qformer = config.model.window_level_Qformer
+        second_per_window = config.model.second_per_window
+        second_stride = config.model.second_stride
 
-        speech_llama_proj_model = config.model.get("speech_llama_proj_model", "")
-        freeze_speech_llama_proj = config.model.get("freeze_speech_llama_proj", False)
+        speech_llama_proj_model = config.model.speech_llama_proj_model
+        freeze_speech_llama_proj = config.model.freeze_speech_llama_proj
 
-        multi_prompt = config.get("multi_prompt", False)
-        prompt_path = config.get("prompt_path", "")
-        prompt_template = config.get("prompt_template", "")
-        max_txt_len = config.get("max_txt_len", 128)
-        end_sym = config.get("end_sym", "</s>")
-        low_resource = config.get("low_resource", False)
-        device_8bit = config.get("device_8bit", 0)
+        multi_prompt = config.multi_prompt
+        prompt_path = config.prompt_path
+        prompt_template = config.prompt_template
+        max_txt_len = config.max_txt_len
+        end_sym = config.end_sym
+        low_resource = config.low_resource
+        device_8bit = config.device_8bit
 
-        lora = True if config.lora.lora is None else config.lora.get("lora", True)
-        lora_rank = 8 if config.lora.lora_rank is None else config.get("lora_rank", 8)
-        lora_alpha = 32 if config.lora.lora_alpha is None else config.lora.get("lora_alpha", 32)
-        lora_dropout = 0.1 if config.lora.lora_dropout is None else config.lora.get("lora_dropout", 0.1)
+        lora = True if config.lora.lora is None else config.lora.lora
+        lora_rank = 8 if config.lora.lora_rank is None else config.lora.lora_rank
+        lora_alpha = 32 if config.lora.lora_alpha is None else config.lora.lora_alpha
+        lora_dropout = 0.1 if config.lora.lora_dropout is None else config.lora.lora_dropout
 
         model = cls(
             llama_path=llama_path,
