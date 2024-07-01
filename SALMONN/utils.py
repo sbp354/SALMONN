@@ -198,9 +198,9 @@ def prepare_batch_audio_input(wav_paths, wav_processor):
             padding = torch.zeros((1, max_padding_mask_length - padding_mask_length), dtype=torch.bool)
             batch_samples["padding_masks"][i] = torch.cat([batch_samples["padding_masks"][i], padding], dim=1)
 
-    batch_samples["spectrograms"] = torch.cat(batch_samples["spectrograms"], dim=0)
-    batch_samples["raw_wavs"] = torch.cat(batch_samples["raw_wavs"], dim=0)
-    batch_samples["padding_masks"] = torch.cat(batch_samples["padding_masks"], dim=0)
+    batch_samples["spectrogram"] = torch.cat(batch_samples["spectrograms"], dim=0)
+    batch_samples["raw_wav"] = torch.cat(batch_samples["raw_wavs"], dim=0)
+    batch_samples["padding_mask"] = torch.cat(batch_samples["padding_masks"], dim=0)
 
     return batch_samples
 
