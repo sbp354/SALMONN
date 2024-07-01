@@ -167,6 +167,7 @@ def prepare_batch_audio_input(wav_paths, wav_processor):
 
     max_spectrogram_length = 0
     max_raw_wav_length = 0
+    max_padding_mask_length = 0
     for wav_path in wav_paths:
         samples = prepare_one_audio_input(wav_path, wav_processor, cuda_enabled=False)
         batch_samples["spectrograms"].append(samples["spectrogram"])
