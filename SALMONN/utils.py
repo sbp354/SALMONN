@@ -205,9 +205,9 @@ def prepare_batch_audio_input(wav_paths, wav_processor, device):
     print("SPECTROGRAM DEVICE",  batch_samples["spectrogram"].device)
     return batch_samples
 
-def prepare_text_input(prompts, model_config):
+def prepare_text_input(prompts, prompt_template):
     prompt = [
-        model_config.prompt_template.format("<Speech><SpeechHere></Speech> " + prompt.strip()) for prompt in prompts
+        prompt_template.format("<Speech><SpeechHere></Speech> " + prompt.strip()) for prompt in prompts
     ]
     return prompt
 
