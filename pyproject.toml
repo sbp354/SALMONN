@@ -4,7 +4,7 @@ requires = ["setuptools", "setuptools-scm"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "SALMONN"
+name = "salmonn"
 description = "SALMONN: Speech Audio Language Music Open Neural Network"
 requires-python = "==3.9.17"
 readme = "README.md"
@@ -24,7 +24,7 @@ dependencies = [
 ]
 
 [tool.setuptools]
-packages = ["SALMONN"]
+packages = ["salmonn"]
 
 [tool.ruff]
 target-version = "py39"
