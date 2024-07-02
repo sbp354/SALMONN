@@ -419,17 +419,18 @@ class SALMONN(nn.Module):
 
         stop_words_ids = [torch.tensor([2]).cuda()]  
         stopping_criteria = StoppingCriteriaList([StoppingCriteriaSub(stops=stop_words_ids)])
+        
         outputs = self.llama_model.generate(
             inputs_embeds=embeds,
-            max_new_tokens=generate_cfg.max_new_tokens,
+            max_new_tokens=generate_cfg.max_new_tokens if generate_cfg.max_new_tokens else 200,
             stopping_criteria=stopping_criteria,
-            num_beams=generate_cfg.num_beams,
-            do_sample=generate_cfg.do_sample,
-            min_length=generate_cfg.min_length,
-            temperature=generate_cfg.temperature,
-            top_p=generate_cfg.top_p,
-            repetition_penalty=generate_cfg.repetition_penalty,
-            length_penalty=generate_cfg.length_penalty,
+            num_beams=generate_cfg.num_beams if generate_cfg.num_beams else 4,
+            do_sample=generate_cfg.do_sample if generate_cfg.do_sample else False,
+            min_length=generate_cfg.min_length if generate_cfg.min_length else 1,
+            temperature=generate_cfg.temperature if generate_cfg.temperature else 1.0,
+            top_p=generate_cfg.top_p if generate_cfg.top_p else 0.9,
+            repetition_penalty=generate_cfg.repetition_penalty if generate_cfg.repetition_penalty else 1.0,
+            length_penalty=generate_cfg.length_penalty if generate_cfg.length_penalty else 1.0,
             attention_mask=attns,
         )
         text = self.llama_tokenizer.batch_decode(outputs, add_special_tokens=False, skip_special_tokens=True)
