@@ -20,7 +20,7 @@ from torch.utils.data import DataLoader, DistributedSampler
 import soundfile as sf
 import numpy as np
 
-from SALMONN.dist_utils import is_main_process, get_world_size, get_rank
+from salmonn.dist_utils import is_main_process, get_world_size, get_rank
 
 
 def now():
