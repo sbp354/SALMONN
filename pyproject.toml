@@ -10,17 +10,35 @@ requires-python = "==3.9.17"
 readme = "README.md"
 dynamic = ["version"]
 dependencies = [
-"torch==2.0.1",
-"torchaudio==2.0.2",
-"peft==0.3.0",
-"soundfile",
-"librosa",
-"transformers==4.28.0",
-"sentencepiece==0.1.97",
 "accelerate==0.20.3",
+"aiohttp", #almj
+"anthropic==0.25.8", #almj
 "bitsandbytes==0.43.1",
 "gradio==3.23.0",
-"numpy<2"
+"gitpython", #almj
+"jsonlines", #almj
+"lark", #almj
+"librosa",
+"matplotlib", #almj
+"numpy<2",
+"openai", #almj
+"pandas", #almj
+"peft==0.3.0",
+"pydantic", #almj
+"python-git", #almj
+"sentencepiece==0.1.97",
+"soundfile",
+"termcolor", #almj
+"tiktoken", #almj
+"torch==2.0.1",
+"torchaudio==2.0.2",
+"transformers==4.28.0",
+"sentencepiece==0.1.97"
+
+"aiohttp", #almj
+    "anthropic==0.25.8", #almj
+    "gitpython", #almj
+    "jsonlines", #almj
 ]
 
 [tool.setuptools]
