@@ -32,8 +32,7 @@ dependencies = [
 "tiktoken", #almj
 "torch==2.0.1",
 "torchaudio==2.0.2",
-"transformers==4.28.0",
-"sentencepiece==0.1.97"
+"transformers==4.28.0"
 ]
 
 [tool.setuptools]
