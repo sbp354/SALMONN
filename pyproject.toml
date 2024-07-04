@@ -26,7 +26,7 @@ dependencies = [
 "peft==0.3.0",
 "pydantic", #almj
 "python-git", #almj
-"sentencepiece==0.1.97",
+"sentencepiece",
 "soundfile",
 "termcolor", #almj
 "tiktoken", #almj
