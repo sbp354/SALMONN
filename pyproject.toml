@@ -34,11 +34,6 @@ dependencies = [
 "torchaudio==2.0.2",
 "transformers==4.28.0",
 "sentencepiece==0.1.97"
-
-"aiohttp", #almj
-    "anthropic==0.25.8", #almj
-    "gitpython", #almj
-    "jsonlines", #almj
 ]
 
 [tool.setuptools]
