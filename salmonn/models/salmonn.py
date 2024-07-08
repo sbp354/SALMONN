@@ -123,6 +123,7 @@ class SALMONN(nn.Module):
             self.llama_model = LlamaForCausalLM.from_pretrained(
                 llama_path,
                 torch_dtype=torch.float16,
+                device_map = "auto"
             )
 
         self.llama_model.resize_token_embeddings(len(self.llama_tokenizer))
